@@ -1,29 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test Speech</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dua with Voice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lateef&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1>Click on the words to hear them:</h1>
-  
-  <p>
-    <span onclick="speakWord('بِاسْمِكَ')">بِاسْمِكَ</span> 
-    <span onclick="speakWord('اللَّهُمَّ')">اللَّهُمَّ</span> 
-    <span onclick="speakWord('أَمُوتُ')">أَمُوتُ</span>
-    <span onclick="speakWord('وَأَحْيَا')">وَأَحْيَا</span>
-  </p>
 
-  <script>
-    function speakWord(word) {
-      // Alert to check if the function is triggered
-      alert('You clicked: ' + word);
-      
-      const utterance = new SpeechSynthesisUtterance(word);
-      utterance.lang = 'ar-SA'; // Arabic language (Saudi Arabia)
-      speechSynthesis.speak(utterance);
-    }
-  </script>
+    <h2>Click on the words to hear them</h2>
+
+    <div id="dua-container">
+        <span onclick="speakWord('بِاسْمِكَ')">بِاسْمِكَ</span> 
+        <span onclick="speakWord('اللَّهُمَّ')">اللَّهُمَّ</span>
+        <span onclick="speakWord('أَمُوتُ')">أَمُوتُ</span>
+        <span onclick="speakWord('وَأَحْيَا')">وَأَحْيَا</span>
+    </div>
+
+    <script>
+        // Function to speak the clicked word
+        function speakWord(word) {
+            console.log('Attempting to speak:', word);
+
+            // Create speech object
+            const speech = new SpeechSynthesisUtterance(word);
+            speech.lang = 'ar-SA'; // Set language to Arabic (Saudi Arabia)
+
+            // Check if speech synthesis is available
+            if ('speechSynthesis' in window) {
+                console.log('Speech synthesis is available, speaking...');
+                window.speechSynthesis.speak(speech);
+            } else {
+                alert("Speech synthesis is not supported in your browser.");
+            }
+
+            // Handle speech event (optional)
+            speech.onstart = function(event) {
+                console.log('Speech started: ', event);
+            };
+            speech.onend = function(event) {
+                console.log('Speech ended: ', event);
+            };
+        }
+
+        // Debugging: Check if speechSynthesis is available
+        if (!('speechSynthesis' in window)) {
+            alert('Speech synthesis is not supported on this device!');
+        }
+    </script>
+
 </body>
 </html>
